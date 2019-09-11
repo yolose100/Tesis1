@@ -444,7 +444,7 @@ Las siguientes propiedades afectan el tamaño de la salida $o$ de un \gls{Layer}
 \begin{equation}
     o = \lfloor\frac{i-k}{s}\rfloor+1
 \end{equation}
-El tipo más común de agrupación es la agrupación máxima, que consiste en dividir el valor de entrada en cada uno de los valores de parche y cada uno de los valores de parche. Existen tipos de agrupación, por ejemplo, agrupación media o promedio, que comparten la misma idea de agregar la entrada localmente aplicando una no linealidad al contenido de algunos parches\cite{boureau2010learning}.
+El tipo más común de agrupación es la agrupación máxima, que consiste en dividir el valor de entrada en cada uno de los valores de parche y cada uno de los valores de parche. Existen tipos de agrupación, por ejemplo, agrupación media o promedio, que comparten la misma idea de agregar la entrada localmente aplicando una no linealidad al contenido de algunos parches~\cite{boureau2010learning}.
 
 
 \begin{figure}[H]
@@ -574,11 +574,11 @@ De lo anterior mencionado se puede calcular lo siguiente.
 
 Aleatoriamente convierte a zero un canal\footnote{ Un canal es un \gls{Feature Map} de 2 dimensiones}. Cada canal sera convertido a zero independientemente en cada llamada a forward con una probabilidad $p$, es usual usar la distribución de Bernolli. 
 
-Como se describe en el artículo \cite{Tompson2014}, si los pixeles adyacentes dentro de los mapas de características están fuertemente correlacionados (como suele ocurrir en las primeras capas convolucionales), entonces el Dropout no regularizará las activaciones y, de lo contrario, solo resultará en una disminución efectiva de la tasa de aprendizaje.
+Como se describe en el artículo~\cite{Tompson2014}, si los pixeles adyacentes dentro de los mapas de características están fuertemente correlacionados (como suele ocurrir en las primeras capas convolucionales), entonces el Dropout no regularizará las activaciones y, de lo contrario, solo resultará en una disminución efectiva de la tasa de aprendizaje.
 
 
 \subsubsection{Normalización por batches}
- Según \cite{Ioffe2015} el entrenamiento en las redes neuronales profundas se complica por el hecho de que la distribución de las entradas de cada capa cambia durante el entrenamiento, a medida que cambian los parámetros de las capas anteriores. Esto ralentiza el entrenamiento al requerir tasas de aprendizaje más bajas y una cuidadosa inicialización de parámetros, y hace que sea extremadamente difícil entrenar Modelos con saturación no lineales. Nos referimos a este fenómeno como cambio de covariables internas y resolvemos el problema al normalizar las entradas de capa. El método propuesto por \cite{Ioffe2015} se basa en hacer de la normalización una parte de la arquitectura del modelo y realizar la normalización para cada mini batch de entrenamiento. La normalización por lotes nos permite utilizar índices de aprendizaje mucho más altos y ser menos cuidadosos con la inicialización. También actúa como regulador, en algunos casos eliminando la necesidad de abandono. 
+ Según~\cite{Ioffe2015} el entrenamiento en las redes neuronales profundas se complica por el hecho de que la distribución de las entradas de cada capa cambia durante el entrenamiento, a medida que cambian los parámetros de las capas anteriores. Esto ralentiza el entrenamiento al requerir tasas de aprendizaje más bajas y una cuidadosa inicialización de parámetros, y hace que sea extremadamente difícil entrenar Modelos con saturación no lineales. Nos referimos a este fenómeno como cambio de covariables internas y resolvemos el problema al normalizar las entradas de capa. El método propuesto por~\cite{Ioffe2015} se basa en hacer de la normalización una parte de la arquitectura del modelo y realizar la normalización para cada mini batch de entrenamiento. La normalización por lotes nos permite utilizar índices de aprendizaje mucho más altos y ser menos cuidadosos con la inicialización. También actúa como regulador, en algunos casos eliminando la necesidad de abandono. 
  \begin{equation}
      y = \frac{x-E[x]}{\sqrt{var[x]+\epsilon}}
  \end{equation}
@@ -627,16 +627,16 @@ Donde:
 
 \section{Redes neuronales en Segmentación semántica}
 Como se menciona en el artículo de~\cite{long2015fully} el uso de las redes neuronales para la clasificación de imágenes cobro bastante importancia desde que el trabajo de~\cite{krizhevsky2012imagenet} en 2012 gano el concurso Imagenet que consistía en etiquetar imágenes, a partir de eso distintos trabajos comenzaron a hacer el uso de las redes neuronales convolucionales para etiquetado de imágenes y para la detección de objetos.
-El próximo paso fue la inferencia de cada pixel, los primeros intentos para la segmentación semántica~\cite{ning2005toward ,   ciresan2012deep , farabet2013learning} realizaban una clasificación para cada uno de los pixeles tomando en cuenta una ventana, es decir se utilizaba una red neuronal para cada pixel. Usar una red neuronal para clasificar cada uno de los pixeles es bastante costoso e ineficiente debido a que parte de las redes que pueden ser utilizados, en el paper de~\cite{long2015fully} indica que la red de propuesta en \cite{krizhevsky2012imagenet}  realiza la tarea de clasificación de una imagen de 224x224 en 1.2 ms mientras que la arquitectura propuesta  puede generar una grilla de 10x10 de una imagen de 500x500 en 22 ms logrando asi una velocidad 5 veces mayor al enfoque primitivo de clasificar cada pixel.
+El próximo paso fue la inferencia de cada pixel, los primeros intentos para la segmentación semántica~\cite{ning2005toward ,   ciresan2012deep , farabet2013learning} realizaban una clasificación para cada uno de los pixeles tomando en cuenta una ventana, es decir se utilizaba una red neuronal para cada pixel. Usar una red neuronal para clasificar cada uno de los pixeles es bastante costoso e ineficiente debido a que parte de las redes que pueden ser utilizados, en el paper de~\cite{long2015fully} indica que la red de propuesta en~\cite{krizhevsky2012imagenet}  realiza la tarea de clasificación de una imagen de 224x224 en 1.2 ms mientras que la arquitectura propuesta  puede generar una grilla de 10x10 de una imagen de 500x500 en 22 ms logrando asi una velocidad 5 veces mayor al enfoque primitivo de clasificar cada pixel.
 
 \subsection{Fully Convolutional Network}
-La \gls{FCN}(Fully Convolutional Network) original aprende un mapeo de pixeles a pixeles\cite{long2015fully}. El canal de la red \gls{FCN} es una extensión de la \gls{CNN} clásica. La idea principal es hacer que la \gls{CNN} clásica tome como entrada imágenes de tamaño arbitrario. La restricción de las \gls{CNN} para aceptar y producir etiquetas solo para entradas de tamaño específico proviene de las capas totalmente conectadas que son fijas. Contrariamente a ellos, las \gls{FCN} solo tienen capas convolucionales y de agrupación que les dan la capacidad de hacer predicciones sobre entradas de tamaño arbitrario. 
+La \gls{FCN}(Fully Convolutional Network) original aprende un mapeo de pixeles a pixeles~\cite{long2015fully}. El canal de la red \gls{FCN} es una extensión de la \gls{CNN} clásica. La idea principal es hacer que la \gls{CNN} clásica tome como entrada imágenes de tamaño arbitrario. La restricción de las \gls{CNN} para aceptar y producir etiquetas solo para entradas de tamaño específico proviene de las capas totalmente conectadas que son fijas. Contrariamente a ellos, las \gls{FCN} solo tienen capas convolucionales y de agrupación que les dan la capacidad de hacer predicciones sobre entradas de tamaño arbitrario. 
 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width = 0.8\textwidth]{images/cat_segmentation.png}
-    \caption{Arquitectura de \gls{FCN} obtenida de \cite{long2015fully}}
+    \caption{Arquitectura de \gls{FCN} obtenida de~\cite{long2015fully}}
     \label{fig:my_label}
 \end{figure}
 La característica de las \gls{FCN} es que estas poseen 2 partes principalmente.
